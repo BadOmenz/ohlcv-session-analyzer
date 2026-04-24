@@ -1,6 +1,6 @@
 # OHLCV Session Analyzer
 
-A full-stack web application that analyzes intraday OHLCV data by trading session (Asia, Europe, New York), computes session-level metrics, classifies behavior, and visualizes results with an interactive chart.
+A full-stack web application that analyzes intraday OHLCV data by trading session, computes session-level metrics, classifies behavior, and visualizes results with an interactive chart.
 
 ---
 
@@ -9,9 +9,9 @@ A full-stack web application that analyzes intraday OHLCV data by trading sessio
 This project demonstrates a complete data pipeline:
 
 - CSV ingestion and validation
-- Session segmentation (including midnight-crossing logic)
+- Session segmentation, including midnight-crossing logic
 - Session-level aggregation and derived metrics
-- Behavioral classification (trending / ranging / neutral)
+- Behavioral classification
 - Summary statistics across session types
 - Deterministic insight generation
 - Interactive frontend visualization
@@ -21,12 +21,14 @@ This project demonstrates a complete data pipeline:
 ## Tech Stack
 
 ### Frontend
-- React (Vite)
+
+- React with Vite
 - TypeScript
 - Axios
 - Recharts
 
 ### Backend
+
 - FastAPI
 - Python
 - Pandas
@@ -35,90 +37,59 @@ This project demonstrates a complete data pipeline:
 
 ## Features
 
-### 1. File Upload
+### File Upload
+
 - Accepts CSV files containing OHLCV data
 - Validates required columns and structure
 
-### 2. Session Segmentation
+### Session Segmentation
 
 Data is segmented into:
 
-- Asia: 18:00 – 02:00 (crosses midnight)
-- Europe: 02:00 – 08:00
-- New York: 08:00 – 16:00
+- Asia: 18:00 to 02:00
+- Europe: 02:00 to 08:00
+- New York: 08:00 to 16:00
 
-Includes correct handling of session dates for overnight sessions.
+The Asia session crosses midnight, so rows after midnight are assigned to the previous session date.
 
----
-
-### 3. Session Metrics
+### Session Metrics
 
 For each session:
 
-- Open, High, Low, Close
-- Range (high - low)
-- Net Change (close - open)
+- Open, high, low, close
+- Range
+- Net change
 - Volume
 - Close position within range
 
----
-
-### 4. Behavioral Classification
+### Behavioral Classification
 
 Each session is classified using:
 
-
+```text
 trend_ratio = abs(net_change) / range
+```
 
+Classification rules:
 
-- Trending: > 0.6
-- Ranging: < 0.3
+- Trending: greater than 0.6
+- Ranging: less than 0.3
 - Neutral: otherwise
 
----
+### Interactive Chart
 
-### 5. Summary Statistics
-
-Aggregated by session type:
-
-- Average range
-- Average net move
-- % bullish / bearish
-- % trending / ranging / neutral
-
----
-
-### 6. Insight Generation
-
-Automatically generates observations such as:
-
-- Highest volatility session
-- Strongest directional bias
-- Most ranging session
-- Most trending session
-
----
-
-### 7. Interactive Chart
-
-- Line chart of price over time
-- Session-colored segments:
-  - Asia = blue
-  - Europe = green
-  - New York = yellow
+- Session-colored price chart
+- Asia = blue
+- Europe = green
+- New York = yellow
 - Tooltip with formatted timestamp and session
 - Zoom and pan using Recharts Brush
 
 ---
 
-## Example Insight
-
-> "New York has the highest average range, indicating the greatest volatility across sessions."
-
----
 ## Project Structure
 
-```
+```text
 project03_ohlcv_session_analyzer/
 │
 ├── backend/
@@ -139,20 +110,42 @@ project03_ohlcv_session_analyzer/
 │   │   └── services/
 │   │       └── api.ts
 │
+├── sample_data/
+│   └── sample_data_mes15m.csv
+│
 └── README.md
 ```
 
+---
+
 ## How to Run
 
-### Backend
+### 1. Clone the repository
+
+```powershell
+git clone https://github.com/BadOmenz/ohlcv-session-analyzer.git
+cd ohlcv-session-analyzer
+```
+
+### 2. Run Backend
 
 ```powershell
 cd backend
+py -m venv venv
 .\venv\Scripts\activate
+pip install fastapi uvicorn python-multipart pandas
 python -m uvicorn main:app --reload
 ```
 
-### Frontend
+Backend runs at:
+
+```text
+http://127.0.0.1:8000
+```
+
+### 3. Run Frontend
+
+Open a second terminal:
 
 ```powershell
 cd frontend
@@ -160,13 +153,29 @@ npm install
 npm run dev
 ```
 
+Frontend runs at:
+
+```text
+http://localhost:5173
+```
+
+### 4. Test the Application
+
+A sample dataset is included:
+
+```text
+sample_data/mes_15m_sample.csv
+```
+
+Upload that file in the UI to test the application.
+
 ---
 
 ## API
 
 ### POST /analyze
 
-Upload a CSV file in this format:
+Accepts a CSV file with this format:
 
 ```csv
 <Date>, <Time>, <Open>, <High>, <Low>, <Close>, <Volume>
@@ -187,7 +196,7 @@ Returns:
 This project emphasizes:
 
 - clear separation of concerns
-- deterministic logic, with no machine learning
+- deterministic logic with no machine learning
 - explicit data transformations
 - explainable metrics
 - rapid prototyping using AI-assisted development
