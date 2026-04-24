@@ -116,34 +116,31 @@ Automatically generates observations such as:
 > "New York has the highest average range, indicating the greatest volatility across sessions."
 
 ---
-
 ## Project Structure
 
-
+```
 project03_ohlcv_session_analyzer/
 │
 ├── backend/
-│ ├── main.py
-│ └── services/
-│ ├── validation.py
-│ ├── sessions.py
-│ ├── aggregation.py
-│ ├── classification.py
-│ ├── summary.py
-│ └── insights.py
+│   ├── main.py
+│   └── services/
+│       ├── validation.py
+│       ├── sessions.py
+│       ├── aggregation.py
+│       ├── classification.py
+│       ├── summary.py
+│       └── insights.py
 │
 ├── frontend/
-│ ├── src/
-│ │ ├── components/
-│ │ │ ├── FileUpload.tsx
-│ │ │ └── PriceChart.tsx
-│ │ └── services/
-│ │ └── api.ts
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── FileUpload.tsx
+│   │   │   └── PriceChart.tsx
+│   │   └── services/
+│   │       └── api.ts
 │
 └── README.md
-
-
----
+```
 
 ## How to Run
 
@@ -153,38 +150,62 @@ project03_ohlcv_session_analyzer/
 cd backend
 .\venv\Scripts\activate
 python -m uvicorn main:app --reload
-Frontend
+```
+
+### Frontend
+
+```powershell
 cd frontend
 npm install
 npm run dev
-API
-POST /analyze
+```
 
-Upload a CSV file in format:  
+---
+
+## API
+
+### POST /analyze
+
+Upload a CSV file in this format:
+
+```csv
 <Date>, <Time>, <Open>, <High>, <Low>, <Close>, <Volume>
 1/29/2026,17:15:00,7041.25,7044.25,7023.50,7024.00,9681
-
+```
 
 Returns:
 
-sessions
-summary
-insights
-chart_data
-Design Notes
+- sessions
+- summary
+- insights
+- chart_data
+
+---
+
+## Design Notes
 
 This project emphasizes:
 
-clear separation of concerns
-deterministic logic (no machine learning)
-explicit data transformations
-explainable metrics
-rapid prototyping using AI-assisted development
-Future Enhancements
-Session-isolated chart mode (stitching sessions together)
-Normalized session performance visualization
-Downloadable analysis report
-Multi-file comparison
-Author: David Folkerth, Ottawa, Canada
+- clear separation of concerns
+- deterministic logic, with no machine learning
+- explicit data transformations
+- explainable metrics
+- rapid prototyping using AI-assisted development
+
+---
+
+## Future Enhancements
+
+- Session-isolated chart mode
+- Normalized session performance visualization
+- Downloadable analysis report
+- Multi-file comparison
+
+---
+
+## Author
+
+David Folkerth  
+Ottawa, Canada
 
 Built as part of a portfolio demonstrating full-stack development, data processing, and analytical system design.
